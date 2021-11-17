@@ -1,4 +1,4 @@
-package com.mobile.data
+package com.mobile.common
 
 import org.junit.Test
 
