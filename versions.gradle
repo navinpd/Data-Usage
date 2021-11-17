@@ -1,0 +1,18 @@
+ext {
+
+    gsonVersion = '2.8.8'
+
+    coreKtxVersion = '1.7.0'
+    androidxAppCompatVersion = '1.3.1'
+    androidxMaterialVersion = '1.4.0'
+    androidxConstraintLayoutVersion = '2.1.1'
+    androidxLiveData = '2.4.0'
+    androidxViewMode = '2.4.0'
+
+    retrofitVersion = '2.9.0'
+    okHttp3Version = '4.2.1'
+
+    jUnitVersion = '4.13.2'
+    androidxJunitVersion = '1.1.3'
+    androidxExpressoVersion = '3.4.0'
+}

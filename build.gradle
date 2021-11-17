@@ -12,7 +12,16 @@ buildscript {
         // in the individual module build.gradle files
     }
 }
+ext {
+    minSdkVersion = 23
+    compileSdkVersion = 31
+    targetSdkVersion = 31
+    versionCodeVersion = 1
+    versionNameVersion = "1.0"
+}
 
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+apply from: 'versions.gradle'

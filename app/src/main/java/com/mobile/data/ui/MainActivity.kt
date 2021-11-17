@@ -1,7 +1,8 @@
-package com.mobile.data
+package com.mobile.data.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.mobile.data.R
 import com.mobile.data.ui.main.MainFragment
 
 class MainActivity : AppCompatActivity() {
