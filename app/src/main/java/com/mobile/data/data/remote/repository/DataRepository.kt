@@ -2,21 +2,16 @@ package com.mobile.data.data.remote.repository
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import com.mobile.data.MobileApplication
 import com.mobile.data.data.remote.NetworkService
 import com.mobile.data.data.remote.model.mobileData.DataApiModel
 import com.mobile.data.data.remote.model.mobileData.DataModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.util.*
 
 internal class DataRepository constructor(
     private val networkService: NetworkService,
 ) {
-    companion object {
-        val TAG = "Repository"
-    }
 
     val mobileLiveData = MutableLiveData<DataModel>()
 
@@ -37,7 +32,6 @@ internal class DataRepository constructor(
             }
 
             override fun onFailure(call: Call<DataApiModel>, t: Throwable) {
-                Log.e(TAG, t.localizedMessage)
                 mobileLiveData.value = DataModel(null, t)
             }
         })
