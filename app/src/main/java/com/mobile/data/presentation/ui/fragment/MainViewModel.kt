@@ -1,4 +1,4 @@
-package com.mobile.data.ui.main
+package com.mobile.data.presentation.ui.fragment
 
 import androidx.lifecycle.ViewModel
 

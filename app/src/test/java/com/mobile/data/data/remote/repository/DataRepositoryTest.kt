@@ -13,13 +13,11 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.ArgumentCaptor
 import org.mockito.Mock
-import org.mockito.Mockito
 import org.mockito.Mockito.`when`
 import org.mockito.junit.MockitoJUnitRunner
 import org.mockito.kotlin.any
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
-import org.mockito.kotlin.whenever
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

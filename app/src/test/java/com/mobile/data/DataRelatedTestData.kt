@@ -1,6 +1,7 @@
 package com.mobile.data
 
 import com.mobile.data.data.remote.model.mobileData.*
+import com.mobile.data.presentation.model.*
 
 
 internal object DataRelatedTestData {
@@ -33,6 +34,37 @@ internal object DataRelatedTestData {
         help = "https://data.gov.sg/api/3/action/help_show?name=datastore_search",
         success = true,
         resultApiModel = resultApiModel
+    )
+
+    private val links = Links(
+        start = "/api/action/datastore_search?resource_id=a807b7ab-6cad-4aa6-87d0-e283a7353a0f",
+        next = "/api/action/datastore_search?offset=100&resource_id=a807b7ab-6cad-4aa6-87d0-e283a7353a0f"
+    )
+
+    private val fields = Fields(
+        type = "int4",
+        id = "_id"
+    )
+
+    private val records =  Records(
+        id = 59,
+        year = 2013,
+        volumeRecords = 2.33,
+        quarter = QUARTER_1(1)
+    )
+
+    val result = com.mobile.data.presentation.model.Result(
+        resourceId = "a807b7ab-6cad-4aa6-87d0-e283a7353a0f",
+        fields = arrayListOf(fields),
+        records = arrayListOf(records),
+        Links = links,
+        total = 1
+    )
+
+    val dataResult = DataResult(
+        help = "https://data.gov.sg/api/3/action/help_show?name=datastore_search",
+        success = true,
+        result = result
     )
 
 }

@@ -1,9 +1,9 @@
-package com.mobile.data.ui
+package com.mobile.data.presentation.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.mobile.data.R
-import com.mobile.data.ui.main.MainFragment
+import com.mobile.data.presentation.ui.fragment.MainFragment
 
 class MainActivity : AppCompatActivity() {
 
