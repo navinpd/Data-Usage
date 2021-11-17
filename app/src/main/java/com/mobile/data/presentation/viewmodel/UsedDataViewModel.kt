@@ -26,7 +26,7 @@ internal class UsedDataViewModel(
         }
     }
 
-    fun invokeUsedData() {
+    fun requestUsedData() {
         showLoading()
         dataRepository.getMobileData(this)
     }

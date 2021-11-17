@@ -6,21 +6,26 @@ import com.mobile.data.DataRelatedTestData
 import com.mobile.data.data.remote.NetworkService
 import com.mobile.data.data.remote.model.mobileData.DataApiModel
 import com.mobile.data.data.remote.model.mobileData.DataModel
+import com.mobile.data.presentation.viewmodel.DataViewState
+import com.mobile.data.presentation.viewmodel.UsedDataViewModel
 import junit.framework.TestCase
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.ArgumentCaptor
-import org.mockito.Mock
+import org.mockito.*
 import org.mockito.Mockito.`when`
 import org.mockito.junit.MockitoJUnitRunner
-import org.mockito.kotlin.any
-import org.mockito.kotlin.times
-import org.mockito.kotlin.verify
+import org.mockito.stubbing.Answer
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import org.mockito.ArgumentMatchers.anyString
+
+import org.mockito.Mockito.doAnswer
+import org.mockito.invocation.InvocationOnMock
+import org.mockito.kotlin.*
+
 
 @RunWith(MockitoJUnitRunner::class)
 class DataRepositoryTest : TestCase() {
@@ -30,9 +35,9 @@ class DataRepositoryTest : TestCase() {
     @Mock
     private lateinit var networkService: NetworkService
     @Mock
-    private lateinit var observer: Observer<DataModel>
-    @Mock
     private var serverCall: Call<DataApiModel>? = null
+    @Mock
+    private lateinit var usedDataViewModel: UsedDataViewModel
     @Mock
     private var response: Response<DataApiModel>? = null
 
@@ -51,40 +56,46 @@ class DataRepositoryTest : TestCase() {
 
     @Test
     fun `verify success data return`() {
+        //Mocking
         `when`(response!!.code()).thenReturn(200)
         `when`(response!!.isSuccessful).thenReturn(true)
         `when`(response!!.body()).thenReturn(DataRelatedTestData.dataApiModel)
 
         //API call
-        dataRepository.getMobileData()
-        dataRepository.mobileLiveData.observeForever(observer)
+        dataRepository.getMobileData(usedDataViewModel)
 
-        //Validation
-        val captor = ArgumentCaptor.forClass(DataModel::class.java)
-        captor.run {
-            verify(observer, times(1)).onChanged(capture())
+        //Verify
+        verify(usedDataViewModel, times(1))
+            .updateUsedDataFromRepository(any())
 
-            assertEquals(DataRelatedTestData.dataApiModel, value.dataApiModel)
-        }
+//        `when`(usedDataViewModel.updateUsedDataFromRepository(any()))
+//            .thenAnswer{ argumentCaptor<DataModel>()
+//                it.getArgument(0)
+//            }
+//
+//        `when`(usedDataViewModel.updateUsedDataFromRepository(any())).then {
+//            assertEquals((it.arguments[0] as DataModel).dataApiModel,
+//                DataRelatedTestData.dataApiModel)
+//        }
     }
 
     @Test
     fun `verify onResponse error`() {
+        //Mocking
         `when`(response!!.code()).thenReturn(404)
         `when`(response!!.isSuccessful).thenReturn(true)
         `when`(response!!.body()).thenReturn(DataRelatedTestData.dataApiModel)
 
         //API call
-        dataRepository.getMobileData()
-        dataRepository.mobileLiveData.observeForever(observer)
+        dataRepository.getMobileData(usedDataViewModel)
 
         //Validation
-        val captor = ArgumentCaptor.forClass(DataModel::class.java)
-        captor.run {
-            verify(observer, times(1)).onChanged(capture())
-
-            assertEquals(value.throwable?.message, "Error in network response 404")
-        }
+        verify(usedDataViewModel, times(1))
+            .updateUsedDataFromRepository(any())
+//        `when`(usedDataViewModel.updateUsedDataFromRepository(any())).then {
+//            assertEquals((it.arguments[0] as Throwable).message,
+//                "Error in network response 404")
+//        }
     }
 
     @Test
@@ -99,15 +110,14 @@ class DataRepositoryTest : TestCase() {
         `when`(response!!.isSuccessful).thenReturn(false)
 
         //API call
-        dataRepository.getMobileData()
-        dataRepository.mobileLiveData.observeForever(observer)
+        dataRepository.getMobileData(usedDataViewModel)
 
         //Validation
-        val captor = ArgumentCaptor.forClass(DataModel::class.java)
-        captor.run {
-            verify(observer, times(1)).onChanged(capture())
-
-            assertEquals(errorMessage, value.throwable?.message)
-        }
+        verify(usedDataViewModel, times(1))
+            .updateUsedDataFromRepository(any())
+//        `when`(usedDataViewModel.updateUsedDataFromRepository(any())).then {
+//            assertEquals((it.arguments[0] as Throwable).message,
+//                errorMessage)
+//        }
     }
 }

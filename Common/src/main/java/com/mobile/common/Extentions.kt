@@ -8,5 +8,5 @@ fun String.getLastChar(): String {
 }
 
 fun String.getYear(): Int {
-    return this.substring(0, 3).toInt()
+    return this.substring(0, 4).toInt()
 }

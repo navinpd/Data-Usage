@@ -2,6 +2,7 @@ package com.mobile.data
 
 import com.mobile.data.data.remote.model.mobileData.*
 import com.mobile.data.presentation.model.*
+import com.mobile.data.presentation.viewmodel.QUARTER
 
 
 internal object DataRelatedTestData {
@@ -17,8 +18,8 @@ internal object DataRelatedTestData {
     )
 
     private val recordsApiModel = RecordsApiModel(
-        volumeOfMobileData = "20.53504752",
-        quarter = "2019-Q1",
+        volumeOfMobileData = "2.33",
+        quarter = "2013-Q1",
         Id = 59
     )
 
@@ -50,7 +51,7 @@ internal object DataRelatedTestData {
         id = 59,
         year = 2013,
         volumeRecords = 2.33,
-        quarter = QUARTER_1(1)
+        quarter = QUARTER.QUARTER_1
     )
 
     val result = com.mobile.data.presentation.model.Result(
