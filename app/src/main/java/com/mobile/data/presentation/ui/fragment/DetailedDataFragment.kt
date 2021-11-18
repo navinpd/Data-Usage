@@ -10,7 +10,7 @@ import com.mobile.common.dpToPx
 import com.mobile.data.R
 import com.mobile.data.databinding.DetailedDataFragmentBinding
 import com.mobile.data.presentation.model.Records
-import com.mobile.data.presentation.ui.adapter.ViewPagerAdapter
+import com.mobile.data.presentation.ui.adapter.QuarterDataAdapter
 import com.mobile.data.presentation.viewmodel.UsedDataViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -50,7 +50,7 @@ internal class DetailedDataFragment :
             }
         }
 
-        var pagerAdapter = ViewPagerAdapter(this.requireActivity(), listItems)
+        var pagerAdapter = QuarterDataAdapter(this.requireActivity(), listItems)
         viewBinding.run {
             viewPager.adapter = pagerAdapter
             viewPager.setPageTransformer(MarginPageTransformer(32.dpToPx(viewPager)))
