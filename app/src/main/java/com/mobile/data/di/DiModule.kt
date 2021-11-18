@@ -4,6 +4,8 @@ import android.content.Context
 import com.mobile.data.data.remote.NetworkService
 import com.mobile.data.data.remote.Networking
 import com.mobile.data.data.remote.repository.DataRepository
+import com.mobile.data.presentation.mapper.*
+import com.mobile.data.presentation.mapper.AnnualResultMapper
 import com.mobile.data.presentation.mapper.DataResultDomainMapper
 import com.mobile.data.presentation.mapper.FieldsDomainMapper
 import com.mobile.data.presentation.mapper.LinksDomainMapper
@@ -36,6 +38,9 @@ internal object DiModule {
     fun provideDataRepository(networkService: NetworkService) = DataRepository(networkService)
 
     @Provides
+    fun provideAnnualResultMapper() = AnnualResultMapper()
+
+    @Provides
     fun provideSharedPreference(@ApplicationContext appContext: Context) =
         appContext.getSharedPreferences("Local-Shared-Pref", 0)
 
@@ -57,6 +62,7 @@ internal object DiModule {
     fun provideSearchViewModel(
         repository: DataRepository,
         dataResultDomainMapper: DataResultDomainMapper,
-    ) = UsedDataViewModel(repository, dataResultDomainMapper)
+        annualResultMapper: AnnualResultMapper
+    ) = UsedDataViewModel(repository, dataResultDomainMapper, annualResultMapper)
 
 }

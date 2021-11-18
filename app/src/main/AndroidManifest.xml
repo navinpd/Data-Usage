@@ -14,7 +14,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MobileData">
         <activity
-            android:name=".presentation.ui.activities.MainActivity"
+            android:name=".presentation.ui.activities.UsedDataActivity"
+            android:theme="@style/Theme.Design.NoActionBar"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

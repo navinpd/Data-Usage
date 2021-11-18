@@ -6,9 +6,7 @@ import com.mobile.data.DataRelatedTestData
 import com.mobile.data.data.remote.model.mobileData.DataModel
 import com.mobile.data.data.remote.repository.DataRepository
 import com.mobile.data.presentation.mapper.*
-import com.mobile.data.presentation.model.Records
 import junit.framework.TestCase
-import net.bytebuddy.implementation.bytecode.Throw
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -86,7 +84,7 @@ internal class UsedDataViewModelTest : TestCase() {
         val captor = ArgumentCaptor.forClass(DataViewState::class.java)
         captor.run {
             verify(observer, times(3)).onChanged(capture())
-            val records = DataViewState.ShowError("Network Error")
+            val records = DataViewState.ShowError()
 
             assertEquals(records.message, (value as DataViewState.ShowError).message)
         }

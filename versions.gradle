@@ -5,7 +5,7 @@ ext {
     coreKtxVersion = '1.7.0'
     androidxAppCompatVersion = '1.3.1'
     androidxMaterialVersion = '1.4.0'
-    androidxConstraintLayoutVersion = '2.1.1'
+    androidxConstraintLayoutVersion = '2.1.2'
     androidxLiveData = '2.4.0'
     androidxViewMode = '2.4.0'
 
@@ -16,6 +16,8 @@ ext {
     mockitoCoreVersion = '3.7.7'
     mockitoInlineVersion = '3.10.0'
     mockitoKotlinVersion = '3.2.0'
+
+    hiltVersion = '2.40'
 
     jUnitVersion = '4.13.2'
     androidxJunitVersion = '1.1.3'

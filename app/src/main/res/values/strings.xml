@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">MobileData</string>
+
+    <string name="dummy_annual_text">Annual Data - 2005</string>
+    <string name="dummy_Data">56.6500</string>
+    <string name="annual_text">Annual Data: %d</string>
+    <string name="dummy_data_quarter">Data Used: 5.6666</string>
+    <string name="data_quarter">Data Used: %f</string>
+
 </resources>

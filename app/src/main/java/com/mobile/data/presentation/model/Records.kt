@@ -4,7 +4,7 @@ import com.mobile.data.presentation.viewmodel.QUARTER
 
 internal class Records(
     val id: Int,
-    val year: Int,
+    val year: String,
     val volumeRecords: Double,
     val quarter: QUARTER
 )
