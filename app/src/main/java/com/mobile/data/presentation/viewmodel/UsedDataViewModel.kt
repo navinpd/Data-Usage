@@ -48,8 +48,10 @@ internal class UsedDataViewModel @Inject constructor(
     }
 
     fun requestUsedData() {
-        showLoading()
-        dataRepository.getMobileData(this)
+        if(records.isEmpty()) {
+            showLoading()
+            dataRepository.getMobileData(this)
+        }
     }
 
     private fun showLoading() {
