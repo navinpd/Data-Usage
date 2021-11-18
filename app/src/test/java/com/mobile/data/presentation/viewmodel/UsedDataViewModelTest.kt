@@ -32,6 +32,7 @@ internal class UsedDataViewModelTest : TestCase() {
         mock(Observer::class.java) as Observer<DataViewState>
 
     private lateinit var usedDataViewModel: UsedDataViewModel
+    private var annualResultMapper = AnnualResultMapper()
 
     @Before
     public override fun setUp() {
@@ -40,7 +41,7 @@ internal class UsedDataViewModelTest : TestCase() {
                 recordsDomainMapper = RecordsDomainMapper(),
                 linksDomainMapper = LinksDomainMapper()))
 
-        usedDataViewModel = UsedDataViewModel(dataRepository, dataDomainMapper)
+        usedDataViewModel = UsedDataViewModel(dataRepository, dataDomainMapper, annualResultMapper)
     }
 
     @Test
@@ -59,22 +60,21 @@ internal class UsedDataViewModelTest : TestCase() {
         val captor = ArgumentCaptor.forClass(DataViewState::class.java)
         captor.run {
             verify(observer, times(3)).onChanged(capture())
-            val records = DataViewState.ShowData(DataRelatedTestData.result.records)
+            val records = DataViewState.ShowData(annualResultMapper.map(DataRelatedTestData.result.records))
 
-            assertEquals(records.show[0].id, (value as DataViewState.ShowData).show[0].id)
-            assertEquals(records.show[0].quarter, (value as DataViewState.ShowData).show[0].quarter)
+            assertEquals(records.show[0].volumeRecord, (value as DataViewState.ShowData).show[0].volumeRecord)
             assertEquals(records.show[0].year, (value as DataViewState.ShowData).show[0].year)
-            assertEquals(records.show[0].volumeRecords, (value as DataViewState.ShowData).show[0].volumeRecords)
         }
     }
 
     @Test
     fun `verify error scenario`() {
         usedDataViewModel.dataViewState.observeForever(observer)
+        var message = "Network Error"
         //Mocking
         `when`(dataRepository.getMobileData(usedDataViewModel)).then(Answer {
             usedDataViewModel.updateUsedDataFromRepository(
-                DataModel(null, Throwable("Network Error"))
+                DataModel(null, Throwable(message))
             )
         })
 
@@ -84,7 +84,7 @@ internal class UsedDataViewModelTest : TestCase() {
         val captor = ArgumentCaptor.forClass(DataViewState::class.java)
         captor.run {
             verify(observer, times(3)).onChanged(capture())
-            val records = DataViewState.ShowError()
+            val records = DataViewState.ShowError(message)
 
             assertEquals(records.message, (value as DataViewState.ShowError).message)
         }

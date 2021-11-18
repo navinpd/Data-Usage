@@ -1,7 +1,10 @@
 package com.mobile.data.data.remote.repository
 
+import android.app.Application
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
+import com.mobile.common.AssetFileLoader
+import com.mobile.common.JsonParser
 import com.mobile.data.DataRelatedTestData
 import com.mobile.data.data.remote.NetworkService
 import com.mobile.data.data.remote.model.mobileData.DataApiModel
@@ -40,12 +43,18 @@ class DataRepositoryTest : TestCase() {
     private lateinit var usedDataViewModel: UsedDataViewModel
     @Mock
     private var response: Response<DataApiModel>? = null
+    @Mock
+    private lateinit var jsonParser: JsonParser
+    @Mock
+    private lateinit var assetFileLoader: AssetFileLoader
+    @Mock
+    private lateinit var application: Application
 
     private lateinit var dataRepository: DataRepository
 
     @Before
     public override fun setUp() {
-        dataRepository = DataRepository(networkService)
+        dataRepository = DataRepository(networkService, jsonParser, assetFileLoader, application)
         //Mocking
         `when`(networkService.getDataUsage()).thenReturn(serverCall)
         `when`(serverCall!!.enqueue(any())).then {
