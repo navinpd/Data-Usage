@@ -6,10 +6,11 @@ import com.mobile.data.data.remote.repository.DataRepository
 import com.mobile.data.presentation.mapper.DataResultDomainMapper
 import com.mobile.data.presentation.model.DataResult
 import com.mobile.data.presentation.model.Records
+import javax.inject.Inject
 
-internal class UsedDataViewModel(
-    var dataRepository: DataRepository,
-    var dataResultDomainMapper: DataResultDomainMapper,
+internal class UsedDataViewModel @Inject constructor(
+    private val dataRepository: DataRepository,
+    private val dataResultDomainMapper: DataResultDomainMapper,
 ) : ViewModel() {
 
     private val dataState = MutableLiveData<DataViewState>()

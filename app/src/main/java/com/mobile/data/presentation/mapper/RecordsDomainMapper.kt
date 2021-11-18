@@ -7,9 +7,11 @@ import com.mobile.data.data.remote.model.mobileData.RecordsApiModel
 import com.mobile.data.presentation.model.*
 import com.mobile.data.presentation.model.Records
 import com.mobile.data.presentation.viewmodel.QUARTER
+import javax.inject.Inject
 
 
-internal class RecordsDomainMapper  constructor(): Mapper<RecordsApiModel, Records> {
+internal class RecordsDomainMapper @Inject
+constructor() : Mapper<RecordsApiModel, Records> {
     override fun map(from: RecordsApiModel): Records {
         val currentQuarter: QUARTER = when (from.quarter.getLastChar()) {
             "1" -> QUARTER.QUARTER_1
@@ -21,7 +23,7 @@ internal class RecordsDomainMapper  constructor(): Mapper<RecordsApiModel, Recor
 
         return Records(
             id = from.Id,
-            year =  from.quarter.getYear(),
+            year = from.quarter.getYear(),
             quarter = currentQuarter,
             volumeRecords = from.volumeOfMobileData.toDouble()
         )

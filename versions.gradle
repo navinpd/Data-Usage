@@ -10,7 +10,7 @@ ext {
     androidxViewMode = '2.4.0'
 
     retrofitVersion = '2.9.0'
-    okHttp3Version = '4.2.1'
+    okHttp3Version = '4.9.0'
 
     androidxTestCore = '2.1.0'
     mockitoCoreVersion = '3.7.7'

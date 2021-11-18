@@ -7,8 +7,9 @@ import com.mobile.data.presentation.viewmodel.UsedDataViewModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import javax.inject.Inject
 
-internal class DataRepository constructor(
+internal class DataRepository @Inject constructor(
     private val networkService: NetworkService,
 ) {
 

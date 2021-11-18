@@ -5,12 +5,13 @@ import com.mobile.data.data.remote.model.mobileData.ResultApiModel
 import com.mobile.data.presentation.model.Fields
 import com.mobile.data.presentation.model.Records
 import com.mobile.data.presentation.model.Result
+import javax.inject.Inject
 
 
-internal class ResultDomainMapper constructor(
+internal class ResultDomainMapper @Inject constructor(
     private val fieldsDomainMapper: FieldsDomainMapper,
     private val recordsDomainMapper: RecordsDomainMapper,
-    private val linksDomainMapper: LinksDomainMapper
+    private val linksDomainMapper: LinksDomainMapper,
 ) : Mapper<ResultApiModel, Result> {
     override fun map(from: ResultApiModel): Result {
         val field = mutableListOf<Fields>()

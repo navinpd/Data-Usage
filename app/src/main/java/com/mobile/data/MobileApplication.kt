@@ -1,6 +1,7 @@
 package com.mobile.data
 
 import android.app.Application
+import dagger.hilt.android.HiltAndroidApp
 
-class MobileApplication : Application() {
-}
+@HiltAndroidApp
+class MobileApplication : Application()

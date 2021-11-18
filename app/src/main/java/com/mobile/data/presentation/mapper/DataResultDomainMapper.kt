@@ -3,9 +3,10 @@ package com.mobile.data.presentation.mapper
 import com.mobile.common.Mapper
 import com.mobile.data.data.remote.model.mobileData.DataApiModel
 import com.mobile.data.presentation.model.DataResult
+import javax.inject.Inject
 
 
-internal class DataResultDomainMapper constructor(
+internal class DataResultDomainMapper @Inject constructor(
     private val resultDomainMapper: ResultDomainMapper
 ) : Mapper<DataApiModel, DataResult> {
 
