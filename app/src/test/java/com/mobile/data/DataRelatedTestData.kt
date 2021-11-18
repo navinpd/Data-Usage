@@ -49,9 +49,9 @@ internal object DataRelatedTestData {
 
     private val records =  Records(
         id = 59,
-        year = 2013,
+        year = "2013",
         volumeRecords = 2.33,
-        quarter = QUARTER.QUARTER_1
+        quarter = QUARTER.QUARTER_1(0)
     )
 
     val result = com.mobile.data.presentation.model.Result(

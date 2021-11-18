@@ -41,6 +41,13 @@ android {
 dependencies {
     implementation project(":Common")
 
+    //viewPager2
+    implementation "androidx.viewpager2:viewpager2:$viewPager2"
+    implementation "com.google.android.material:material:$tabLayout"
+
+    implementation "androidx.fragment:fragment-ktx:$androidxKtx"
+    implementation "androidx.activity:activity-ktx:$androidxKtx"
+
     //Gson
     implementation "com.google.code.gson:gson:$gsonVersion"
 

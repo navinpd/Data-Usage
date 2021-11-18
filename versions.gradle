@@ -18,6 +18,9 @@ ext {
     mockitoKotlinVersion = '3.2.0'
 
     hiltVersion = '2.40'
+    viewPager2 = '1.0.0'
+    tabLayout = "1.4.0"
+    androidxKtx = "1.4.0"
 
     jUnitVersion = '4.13.2'
     androidxJunitVersion = '1.1.3'

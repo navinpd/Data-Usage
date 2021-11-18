@@ -14,11 +14,11 @@ internal class RecordsDomainMapper @Inject
 constructor() : Mapper<RecordsApiModel, Records> {
     override fun map(from: RecordsApiModel): Records {
         val currentQuarter: QUARTER = when (from.quarter.getLastChar()) {
-            "1" -> QUARTER.QUARTER_1
-            "2" -> QUARTER.QUARTER_2
-            "3" -> QUARTER.QUARTER_3
-            "4" -> QUARTER.QUARTER_4
-            else -> QUARTER.QUARTER_1
+            "1" -> QUARTER.QUARTER_1(0)
+            "2" -> QUARTER.QUARTER_2(1)
+            "3" -> QUARTER.QUARTER_3(2)
+            "4" -> QUARTER.QUARTER_4(3)
+            else -> QUARTER.QUARTER_1(0)
         }
 
         return Records(

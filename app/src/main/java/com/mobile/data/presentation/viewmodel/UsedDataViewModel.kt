@@ -1,5 +1,6 @@
 package com.mobile.data.presentation.viewmodel
 
+import android.os.Parcelable
 import androidx.lifecycle.*
 import com.mobile.data.data.remote.model.mobileData.DataModel
 import com.mobile.data.data.remote.repository.DataRepository
@@ -7,19 +8,32 @@ import com.mobile.data.presentation.mapper.AnnualResultMapper
 import com.mobile.data.presentation.mapper.DataResultDomainMapper
 import com.mobile.data.presentation.model.AnnualRecord
 import com.mobile.data.presentation.model.Records
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.parcelize.Parcelize
 import javax.inject.Inject
 
+@HiltViewModel
 internal class UsedDataViewModel @Inject constructor(
     private val dataRepository: DataRepository,
     private val dataResultDomainMapper: DataResultDomainMapper,
-    private val annualResultMapper: AnnualResultMapper
+    private val annualResultMapper: AnnualResultMapper,
 ) : ViewModel() {
 
-    private lateinit var records: List<Records>
+    var records: List<Records> = mutableListOf()
 
     private val dataState = MutableLiveData<DataViewState>()
     val dataViewState: LiveData<DataViewState>
         get() = dataState
+
+    fun getQuarterlyData(year: String): List<Records> {
+        val localRecords = mutableListOf<Records>()
+        records.forEach {
+            if (it.year == year.substring(year.length - 4, year.length)) {
+                localRecords.add(it)
+            }
+        }
+        return localRecords
+    }
 
     fun updateUsedDataFromRepository(dataModel: DataModel) {
         hideLoading()
@@ -62,9 +76,16 @@ internal sealed class DataViewState {
     data class ShowData(val show: List<AnnualRecord>) : DataViewState()
 }
 
-internal sealed class QUARTER {
-    object QUARTER_1 : QUARTER()
-    object QUARTER_2 : QUARTER()
-    object QUARTER_3 : QUARTER()
-    object QUARTER_4 : QUARTER()
+internal sealed class QUARTER : Parcelable {
+    @Parcelize
+    data class QUARTER_1(var int: Int) : QUARTER()
+
+    @Parcelize
+    data class QUARTER_2(var int: Int) : QUARTER()
+
+    @Parcelize
+    data class QUARTER_3(var int: Int) : QUARTER()
+
+    @Parcelize
+    data class QUARTER_4(var int: Int) : QUARTER()
 }
