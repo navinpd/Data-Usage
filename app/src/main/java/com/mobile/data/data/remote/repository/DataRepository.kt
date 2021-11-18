@@ -1,5 +1,9 @@
 package com.mobile.data.data.remote.repository
 
+import android.app.Application
+import android.util.Log
+import com.mobile.common.AssetFileLoader
+import com.mobile.common.JsonParser
 import com.mobile.data.data.remote.NetworkService
 import com.mobile.data.data.remote.model.mobileData.DataApiModel
 import com.mobile.data.data.remote.model.mobileData.DataModel
@@ -7,15 +11,39 @@ import com.mobile.data.presentation.viewmodel.UsedDataViewModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.FileNotFoundException
+import java.util.logging.Logger
 import javax.inject.Inject
 
 internal class DataRepository @Inject constructor(
     private val networkService: NetworkService,
+    private val jsonParser: JsonParser,
+    private val assetFileLoader: AssetFileLoader,
+    private val application: Application,
 ) {
 
     private lateinit var usedDataViewModel: UsedDataViewModel
 
+    companion object {
+        const val IS_CACHED_RESPONSE = false
+        const val DATA_JSON = "report.json"
+        const val TAG = "DataRepository"
+    }
+
     fun getMobileData(usedDataViewModel: UsedDataViewModel) {
+        if (IS_CACHED_RESPONSE) {
+            try {
+                val jsonService = assetFileLoader.loadFileAsStream(application, DATA_JSON)
+                    .bufferedReader()
+                    .readText()
+                usedDataViewModel.updateUsedDataFromRepository(DataModel(jsonParser
+                    .parse(jsonService, DataApiModel::class.java), null))
+                return
+            } catch (exception: FileNotFoundException) {
+                Log.e(TAG, exception.message!!)
+            }
+        }
+
         this.usedDataViewModel = usedDataViewModel
         val usedData = networkService.getDataUsage()
 

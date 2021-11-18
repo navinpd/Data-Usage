@@ -1,6 +1,9 @@
 package com.mobile.data.di
 
+import android.app.Application
 import android.content.Context
+import com.mobile.common.AssetFileLoader
+import com.mobile.common.JsonParser
 import com.mobile.data.data.remote.NetworkService
 import com.mobile.data.data.remote.Networking
 import com.mobile.data.data.remote.repository.DataRepository
@@ -35,7 +38,18 @@ internal object DiModule {
     fun provideNetworking(): NetworkService = Networking.createNetworking()
 
     @Provides
-    fun provideDataRepository(networkService: NetworkService) = DataRepository(networkService)
+    fun provideJsonParser() = JsonParser()
+
+    @Provides
+    fun provideAssetFileLoader() = AssetFileLoader()
+
+    @Provides
+    fun provideDataRepository(
+        networkService: NetworkService,
+        jsonParser: JsonParser,
+        assetFileLoader: AssetFileLoader,
+        application: Application
+    ) = DataRepository(networkService, jsonParser, assetFileLoader, application)
 
     @Provides
     fun provideAnnualResultMapper() = AnnualResultMapper()
@@ -62,7 +76,7 @@ internal object DiModule {
     fun provideSearchViewModel(
         repository: DataRepository,
         dataResultDomainMapper: DataResultDomainMapper,
-        annualResultMapper: AnnualResultMapper
+        annualResultMapper: AnnualResultMapper,
     ) = UsedDataViewModel(repository, dataResultDomainMapper, annualResultMapper)
 
 }
