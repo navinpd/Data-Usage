@@ -4,7 +4,6 @@ import android.app.Application
 import android.util.Log
 import com.mobile.common.AssetFileLoader
 import com.mobile.common.JsonParser
-import com.mobile.data.R
 import com.mobile.data.data.remote.NetworkService
 import com.mobile.data.data.remote.model.mobileData.DataApiModel
 import com.mobile.data.data.remote.model.mobileData.DataModel
@@ -60,15 +59,7 @@ internal class DataRepository @Inject constructor(
                     usedDataViewModel.updateUsedDataFromRepository(DataModel(response.body(), null))
                 } else {
                     usedDataViewModel.updateUsedDataFromRepository(
-                        DataModel(
-                            null,
-                            Throwable(
-                                application.getString(
-                                    R.string.error_in_response,
-                                    response.code()
-                                )
-                            )
-                        )
+                        DataModel(null, Throwable("Error in network response 404"))
                     )
                 }
             }

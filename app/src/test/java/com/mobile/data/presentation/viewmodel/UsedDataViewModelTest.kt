@@ -1,5 +1,6 @@
 package com.mobile.data.presentation.viewmodel
 
+import android.content.SharedPreferences
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import com.mobile.data.DataRelatedTestData
@@ -13,9 +14,9 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.ArgumentCaptor
 import org.mockito.Mock
-import org.mockito.Mockito.`when`
-import org.mockito.Mockito.mock
+import org.mockito.Mockito.*
 import org.mockito.junit.MockitoJUnitRunner
+import org.mockito.kotlin.doNothing
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import org.mockito.stubbing.Answer
@@ -27,6 +28,12 @@ internal class UsedDataViewModelTest : TestCase() {
 
     @Mock
     private lateinit var dataRepository: DataRepository
+
+    @Mock
+    private lateinit var sharedPreferences: SharedPreferences
+
+    @Mock
+    private lateinit var editor: SharedPreferences.Editor
 
     private var observer: Observer<DataViewState> =
         mock(Observer::class.java) as Observer<DataViewState>
@@ -41,7 +48,10 @@ internal class UsedDataViewModelTest : TestCase() {
                 recordsDomainMapper = RecordsDomainMapper(),
                 linksDomainMapper = LinksDomainMapper()))
 
-        usedDataViewModel = UsedDataViewModel(dataRepository, dataDomainMapper, annualResultMapper)
+        `when`(sharedPreferences.edit()).thenReturn(editor)
+        `when`(editor.putString(anyString(), anyString())).thenReturn(editor)
+
+        usedDataViewModel = UsedDataViewModel(dataRepository, dataDomainMapper, annualResultMapper, sharedPreferences)
     }
 
     @Test
@@ -88,5 +98,49 @@ internal class UsedDataViewModelTest : TestCase() {
 
             assertEquals(records.message, (value as DataViewState.ShowError).message)
         }
+    }
+
+    @Test
+    fun `verify failed getLocalRecords`() {
+        `when`(sharedPreferences.getString(anyString(), anyString()))
+            .thenReturn("")
+        val itemLists = usedDataViewModel.getLocalRecords()
+        assertEquals(itemLists.size, 0)
+    }
+
+    @Test
+    fun `verify successful getLocalRecords`() {
+        //Mocking
+        `when`(sharedPreferences.getString(anyString(), anyString()))
+            .thenReturn(DataRelatedTestData.jsonRecords)
+        //api call
+        val itemLists = usedDataViewModel.getLocalRecords()
+        //validation
+        assertEquals(itemLists.size, 3)
+        assertEquals(itemLists[0].year, "2004")
+    }
+
+    @Test
+    fun `verify Success getQuarterlyData`() {
+        //Mocking
+        `when`(sharedPreferences.getString(anyString(), anyString()))
+            .thenReturn(DataRelatedTestData.jsonRecords)
+
+        //api call
+        val itemLists = usedDataViewModel.getQuarterlyData("2004")
+
+        //validation
+        assertEquals(itemLists.size, 2)
+        assertEquals(itemLists[0].year, "2004")
+    }
+
+
+    @Test
+    fun `verify Failed getQuarterlyData`() {
+        //api call
+        val itemLists = usedDataViewModel.getQuarterlyData("")
+
+        //validation
+        assertEquals(itemLists.size, 0)
     }
 }

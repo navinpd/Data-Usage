@@ -29,6 +29,9 @@ internal class UsedDataViewModel @Inject constructor(
         get() = dataState
 
     fun getQuarterlyData(year: String): List<Records> {
+        if(year.length < 4)
+            return emptyList()
+
         val localRecords = mutableListOf<Records>()
 
         val models = getLocalRecords()
@@ -48,7 +51,7 @@ internal class UsedDataViewModel @Inject constructor(
             records = dataResult.result.records
             val model = Gson().toJson(records)
 
-            sharedPreferences.edit().putString(LOCAL_DATA_KEY, model).commit()
+            sharedPreferences.edit().putString(LOCAL_DATA_KEY, model).apply()
 
             val annualRecords = annualResultMapper.map(records)
             onDataRetrieved(annualRecords)
@@ -62,7 +65,7 @@ internal class UsedDataViewModel @Inject constructor(
         }
     }
 
-    private fun getLocalRecords(): List<Records> {
+    fun getLocalRecords(): List<Records> {
         val data = sharedPreferences.getString(LOCAL_DATA_KEY, "")
         if(data.isNullOrBlank())
             return emptyList()

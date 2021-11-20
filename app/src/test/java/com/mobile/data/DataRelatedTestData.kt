@@ -67,4 +67,6 @@ internal object DataRelatedTestData {
         result = result
     )
 
+    val jsonRecords = "[{\"id\":1,\"quarter\":3,\"volumeRecords\":0.000384,\"year\":\"2004\"},{\"id\":2,\"quarter\":4,\"volumeRecords\":0.000543,\"year\":\"2004\"},{\"id\":3,\"quarter\":1,\"volumeRecords\":20.53504752,\"year\":\"2019\"}]"
+
 }
