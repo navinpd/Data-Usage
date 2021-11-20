@@ -8,6 +8,16 @@ plugins {
 
 android {
     compileSdk rootProject.compileSdkVersion
+    signingConfigs {
+        release {
+            storeFile file("../keystore.jks")
+            storePassword "navin123"
+            keyAlias "navin123"
+            keyPassword "navin123"
+            v1SigningEnabled true
+            v2SigningEnabled true
+        }
+    }
 
     defaultConfig {
         applicationId "com.mobile.data"
@@ -22,7 +32,13 @@ android {
     buildTypes {
         release {
             minifyEnabled true
+            signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            applicationIdSuffix ".debug"
+            signingConfig signingConfigs.debug
+            debuggable true
         }
     }
     compileOptions {
