@@ -8,5 +8,10 @@
     <string name="data_used">Data Used: %f</string>
     <string name="quarter_number">QUARTER_%d</string>
     <string name="annual_year">Annual Year: %s</string>
+    <string name="selected_year">Selected Year: %s</string>
+    <string name="no_internet_error">Please Enable Internet Connection</string>
+    <string name="orientation_changed">Orientation Changed</string>
+    <string name="moved_to_page">Moved to Page %d</string>
+    <string name="error_in_response">Error in network response %d</string>
 
 </resources>

@@ -39,6 +39,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/errorMessage"
+        android:layout_width="match_parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:elevation="@dimen/elevation_lvl1"
+        android:gravity="center"
+        android:textColor="@color/neutral_primary"
+        android:textSize="@dimen/font_size_m"
+        android:layout_height="wrap_content" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/usedDataRecyclerView"
         android:layout_width="0dp"

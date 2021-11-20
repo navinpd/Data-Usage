@@ -7,7 +7,11 @@ import android.view.ViewGroup
 import com.mobile.data.R
 import com.mobile.data.databinding.ViewPagerAdapterBinding
 import com.mobile.data.presentation.model.Records
+import com.mobile.data.util.PageNotifier
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 internal class SlideScreenCardFragment() :
     BaseFragment<ViewPagerAdapterBinding>(R.layout.view_pager_adapter) {
 

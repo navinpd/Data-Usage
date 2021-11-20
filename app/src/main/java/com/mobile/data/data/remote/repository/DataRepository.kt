@@ -4,6 +4,7 @@ import android.app.Application
 import android.util.Log
 import com.mobile.common.AssetFileLoader
 import com.mobile.common.JsonParser
+import com.mobile.data.R
 import com.mobile.data.data.remote.NetworkService
 import com.mobile.data.data.remote.model.mobileData.DataApiModel
 import com.mobile.data.data.remote.model.mobileData.DataModel
@@ -12,7 +13,6 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.FileNotFoundException
-import java.util.logging.Logger
 import javax.inject.Inject
 
 internal class DataRepository @Inject constructor(
@@ -36,8 +36,12 @@ internal class DataRepository @Inject constructor(
                 val jsonService = assetFileLoader.loadFileAsStream(application, DATA_JSON)
                     .bufferedReader()
                     .readText()
-                usedDataViewModel.updateUsedDataFromRepository(DataModel(jsonParser
-                    .parse(jsonService, DataApiModel::class.java), null))
+                usedDataViewModel.updateUsedDataFromRepository(
+                    DataModel(
+                        jsonParser
+                            .parse(jsonService, DataApiModel::class.java), null
+                    )
+                )
                 return
             } catch (exception: FileNotFoundException) {
                 Log.e(TAG, exception.message!!)
@@ -52,12 +56,20 @@ internal class DataRepository @Inject constructor(
                 call: Call<DataApiModel>,
                 response: Response<DataApiModel>,
             ) {
-
                 if (response.isSuccessful && response.code() == 200) {
                     usedDataViewModel.updateUsedDataFromRepository(DataModel(response.body(), null))
                 } else {
-                    usedDataViewModel.updateUsedDataFromRepository(DataModel(null,
-                        Throwable("Error in network response ${response.code()}")))
+                    usedDataViewModel.updateUsedDataFromRepository(
+                        DataModel(
+                            null,
+                            Throwable(
+                                application.getString(
+                                    R.string.error_in_response,
+                                    response.code()
+                                )
+                            )
+                        )
+                    )
                 }
             }
 

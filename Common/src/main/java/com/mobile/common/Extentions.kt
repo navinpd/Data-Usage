@@ -21,7 +21,7 @@ fun Double.format(fracDigits: Int): String {
     return df.format(this)
 }
 
-fun Int.dpToPx(viewPager : ViewPager2): Int {
+fun Int.dpToPx(viewPager: ViewPager2): Int {
     return TypedValue.applyDimension(
         TypedValue.COMPLEX_UNIT_DIP,
         this.toFloat(),

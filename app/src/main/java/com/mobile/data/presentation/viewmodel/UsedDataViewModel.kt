@@ -1,8 +1,9 @@
 package com.mobile.data.presentation.viewmodel
 
 import android.content.SharedPreferences
-import android.os.Parcelable
 import androidx.lifecycle.*
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.mobile.data.data.remote.model.mobileData.DataModel
 import com.mobile.data.data.remote.repository.DataRepository
 import com.mobile.data.presentation.mapper.AnnualResultMapper
@@ -10,10 +11,7 @@ import com.mobile.data.presentation.mapper.DataResultDomainMapper
 import com.mobile.data.presentation.model.AnnualRecord
 import com.mobile.data.presentation.model.Records
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.parcelize.Parcelize
 import javax.inject.Inject
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
 
 @HiltViewModel
 internal class UsedDataViewModel @Inject constructor(
@@ -32,10 +30,8 @@ internal class UsedDataViewModel @Inject constructor(
 
     fun getQuarterlyData(year: String): List<Records> {
         val localRecords = mutableListOf<Records>()
-        val data = sharedPreferences.getString(LOCAL_DATA_KEY, "")
 
-        val gson = GsonBuilder().create()
-        val  models = gson.fromJson(data,Array<Records>::class.java).toList()
+        val models = getLocalRecords()
 
         models.forEach {
             if (it.year == year.substring(year.length - 4, year.length)) {
@@ -57,12 +53,24 @@ internal class UsedDataViewModel @Inject constructor(
             val annualRecords = annualResultMapper.map(records)
             onDataRetrieved(annualRecords)
         } else {
-            onDataFetchFailed(dataModel.throwable!!)
+            if (dataModel.throwable!!.message?.startsWith("Unable to resolve host") == true) {
+                val models = getLocalRecords()
+                onDataRetrieved(annualResultMapper.map(models))
+            } else {
+                onDataFetchFailed(dataModel.throwable!!)
+            }
         }
     }
 
+    private fun getLocalRecords(): List<Records> {
+        val data = sharedPreferences.getString(LOCAL_DATA_KEY, "")
+        if(data.isNullOrBlank())
+            return emptyList()
+        return GsonBuilder().create().fromJson(data, Array<Records>::class.java).toList()
+    }
+
     fun requestUsedData() {
-        if(records.isEmpty()) {
+        if (records.isEmpty()) {
             showLoading()
             dataRepository.getMobileData(this)
         }

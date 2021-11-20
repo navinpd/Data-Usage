@@ -38,7 +38,8 @@ internal class UsedDataFragment :
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        annualViewAdapter = AnnualViewAdapter(usedData = listOfRecords, stringLocalizer = stringLocalizer)
+        annualViewAdapter =
+            AnnualViewAdapter(usedData = listOfRecords, stringLocalizer = stringLocalizer)
         viewModel.requestUsedData()
         return inflater.inflate(R.layout.data_used_fragment, container, false)
     }
@@ -60,14 +61,19 @@ internal class UsedDataFragment :
 
                 is DataViewState.ShowData -> {
                     listOfRecords.clear()
-                    listOfRecords.addAll(value.show)
+                    if (value.show.isEmpty()) {
+                        viewBinding.errorMessage.text = getString(R.string.no_internet_error)
+                    } else {
+                        listOfRecords.addAll(value.show)
 
-                    annualViewAdapter.notifyDataSetChanged()
-                    annualViewAdapter.onClickListener = selectItemClickListener
+                        annualViewAdapter.notifyDataSetChanged()
+                        annualViewAdapter.onClickListener = selectItemClickListener
+                    }
                 }
 
                 is DataViewState.ShowError -> {
                     Toast.makeText(this.context, value.message, Toast.LENGTH_LONG).show()
+                    viewBinding.errorMessage.text = value.message
                 }
             }
         })
@@ -76,7 +82,11 @@ internal class UsedDataFragment :
     private val selectItemClickListener =
         View.OnClickListener { view ->
             val selectedYear = view.tag as String
-            Toast.makeText(this.context, "Item clicked $selectedYear", Toast.LENGTH_LONG).show()
+            Toast.makeText(
+                this.context,
+                getString(R.string.selected_year, selectedYear),
+                Toast.LENGTH_LONG
+            ).show()
 
             (activity as UsedDataActivity).launchDetailedYearView(selectedYear)
         }

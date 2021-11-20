@@ -21,7 +21,7 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -71,7 +71,6 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$androidxLiveData"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$androidxViewMode"
 
-
     //Junit
     testImplementation "junit:junit:$jUnitVersion"
     testImplementation "org.mockito:mockito-core:$mockitoCoreVersion"
@@ -79,7 +78,6 @@ dependencies {
     testImplementation "org.mockito.kotlin:mockito-kotlin:$mockitoKotlinVersion"
     testImplementation "androidx.arch.core:core-testing:$androidxTestCore"
     testImplementation 'android.arch.core:core-testing:1.1.1'
-
 
     //Expresso
     androidTestImplementation "androidx.test.ext:junit:$androidxJunitVersion"

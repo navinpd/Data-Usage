@@ -6,13 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.viewpager2.widget.MarginPageTransformer
+import androidx.viewpager2.widget.ViewPager2
 import com.mobile.common.dpToPx
 import com.mobile.data.R
 import com.mobile.data.databinding.DetailedDataFragmentBinding
 import com.mobile.data.presentation.model.Records
 import com.mobile.data.presentation.ui.adapter.QuarterDataAdapter
 import com.mobile.data.presentation.viewmodel.UsedDataViewModel
+import com.mobile.data.util.PageNotifier
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 
 @AndroidEntryPoint
@@ -20,6 +23,10 @@ internal class DetailedDataFragment :
     BaseFragment<DetailedDataFragmentBinding>(R.layout.detailed_data_fragment) {
 
     private val viewModel by viewModels<UsedDataViewModel>()
+
+    @Inject
+    lateinit var pageNotifier: PageNotifier
+    private lateinit var onPageChangeCallback: ViewPager2.OnPageChangeCallback
 
     companion object {
         const val YEAR = "DetailedDataFragment.YEAR"
@@ -37,8 +44,10 @@ internal class DetailedDataFragment :
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        return inflater.inflate(R.layout.detailed_data_fragment,
-            container, false)
+        return inflater.inflate(
+            R.layout.detailed_data_fragment,
+            container, false
+        )
     }
 
     override fun viewCreated(view: View, savedInstanceState: Bundle?) {
@@ -50,11 +59,28 @@ internal class DetailedDataFragment :
             }
         }
 
-        var pagerAdapter = QuarterDataAdapter(this.requireActivity(), listItems)
+        onPageChangeCallback = object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                pageNotifier.movedToPage(getString(R.string.moved_to_page, position))
+            }
+        }
+
+        val pagerAdapter = QuarterDataAdapter(this.requireActivity(), listItems)
         viewBinding.run {
             viewPager.adapter = pagerAdapter
             viewPager.setPageTransformer(MarginPageTransformer(32.dpToPx(viewPager)))
+            viewPager.registerOnPageChangeCallback(onPageChangeCallback)
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        pageNotifier.orientationChanged(getString(R.string.orientation_changed))
+        super.onSaveInstanceState(outState)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        viewBinding.viewPager.unregisterOnPageChangeCallback(onPageChangeCallback)
     }
 
     override fun bindView(view: View) = DetailedDataFragmentBinding.bind(view)

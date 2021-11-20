@@ -16,6 +16,7 @@ import com.mobile.data.presentation.mapper.LinksDomainMapper
 import com.mobile.data.presentation.mapper.RecordsDomainMapper
 import com.mobile.data.presentation.mapper.ResultDomainMapper
 import com.mobile.data.presentation.viewmodel.UsedDataViewModel
+import com.mobile.data.util.PageNotifier
 import com.mobile.data.util.StringLocalizer
 import com.mobile.data.util.StringLocalizerImpl
 import dagger.Module
@@ -42,6 +43,9 @@ internal object DiModule {
 
     @Provides
     fun provideJsonParser() = JsonParser()
+
+    @Provides
+    fun providesPageNotifier() = PageNotifier()
 
     @Provides
     fun provideAssetFileLoader() = AssetFileLoader()
