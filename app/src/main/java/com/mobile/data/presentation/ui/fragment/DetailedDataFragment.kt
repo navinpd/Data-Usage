@@ -53,9 +53,10 @@ internal class DetailedDataFragment :
     override fun viewCreated(view: View, savedInstanceState: Bundle?) {
         val listItems = mutableListOf<Records>()
         if (arguments != null) {
-            val detailInfo = requireArguments().getString(YEAR)
-            if (!detailInfo.isNullOrEmpty()) {
-                listItems.addAll(viewModel.getQuarterlyData(detailInfo))
+            val year = requireArguments().getString(YEAR)
+            if (!year.isNullOrEmpty()) {
+                listItems.addAll(viewModel.getQuarterlyData(year))
+                pageNotifier.logSelectedYear(getString(R.string.selected_year, year))
             }
         }
 
