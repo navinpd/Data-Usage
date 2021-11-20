@@ -2,7 +2,6 @@ package com.mobile.data
 
 import com.mobile.data.data.remote.model.mobileData.*
 import com.mobile.data.presentation.model.*
-import com.mobile.data.presentation.viewmodel.QUARTER
 
 
 internal object DataRelatedTestData {
@@ -51,7 +50,7 @@ internal object DataRelatedTestData {
         id = 59,
         year = "2013",
         volumeRecords = 2.33,
-        quarter = QUARTER.QUARTER_1(0)
+        quarter = 2
     )
 
     val result = com.mobile.data.presentation.model.Result(

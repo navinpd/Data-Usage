@@ -1,5 +1,6 @@
 package com.mobile.data.presentation.viewmodel
 
+import android.content.SharedPreferences
 import android.os.Parcelable
 import androidx.lifecycle.*
 import com.mobile.data.data.remote.model.mobileData.DataModel
@@ -11,23 +12,32 @@ import com.mobile.data.presentation.model.Records
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.parcelize.Parcelize
 import javax.inject.Inject
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 
 @HiltViewModel
 internal class UsedDataViewModel @Inject constructor(
     private val dataRepository: DataRepository,
     private val dataResultDomainMapper: DataResultDomainMapper,
     private val annualResultMapper: AnnualResultMapper,
+    private val sharedPreferences: SharedPreferences
 ) : ViewModel() {
 
-    var records: List<Records> = mutableListOf()
-
+    private val LOCAL_DATA_KEY = "LOCAL_DATA"
     private val dataState = MutableLiveData<DataViewState>()
+
+    var records: List<Records> = mutableListOf()
     val dataViewState: LiveData<DataViewState>
         get() = dataState
 
     fun getQuarterlyData(year: String): List<Records> {
         val localRecords = mutableListOf<Records>()
-        records.forEach {
+        val data = sharedPreferences.getString(LOCAL_DATA_KEY, "")
+
+        val gson = GsonBuilder().create()
+        val  models = gson.fromJson(data,Array<Records>::class.java).toList()
+
+        models.forEach {
             if (it.year == year.substring(year.length - 4, year.length)) {
                 localRecords.add(it)
             }
@@ -40,6 +50,10 @@ internal class UsedDataViewModel @Inject constructor(
         if (dataModel.throwable == null) {
             val dataResult = dataResultDomainMapper.map(dataModel.dataApiModel!!)
             records = dataResult.result.records
+            val model = Gson().toJson(records)
+
+            sharedPreferences.edit().putString(LOCAL_DATA_KEY, model).commit()
+
             val annualRecords = annualResultMapper.map(records)
             onDataRetrieved(annualRecords)
         } else {
@@ -76,18 +90,4 @@ internal sealed class DataViewState {
     object HideLoading : DataViewState()
     data class ShowError(val message: String) : DataViewState()
     data class ShowData(val show: List<AnnualRecord>) : DataViewState()
-}
-
-internal sealed class QUARTER : Parcelable {
-    @Parcelize
-    data class QUARTER_1(var int: Int) : QUARTER()
-
-    @Parcelize
-    data class QUARTER_2(var int: Int) : QUARTER()
-
-    @Parcelize
-    data class QUARTER_3(var int: Int) : QUARTER()
-
-    @Parcelize
-    data class QUARTER_4(var int: Int) : QUARTER()
 }

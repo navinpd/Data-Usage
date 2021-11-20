@@ -15,12 +15,16 @@ import com.mobile.data.presentation.ui.activities.UsedDataActivity
 import com.mobile.data.presentation.ui.adapter.AnnualViewAdapter
 import com.mobile.data.presentation.viewmodel.DataViewState
 import com.mobile.data.presentation.viewmodel.UsedDataViewModel
+import com.mobile.data.util.StringLocalizer
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
 internal class UsedDataFragment :
     BaseFragment<DataUsedFragmentBinding>(R.layout.data_used_fragment) {
+
+    @Inject
+    lateinit var stringLocalizer: StringLocalizer
 
     private val viewModel by viewModels<UsedDataViewModel>()
     lateinit var annualViewAdapter: AnnualViewAdapter
@@ -34,7 +38,7 @@ internal class UsedDataFragment :
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        annualViewAdapter = AnnualViewAdapter(listOfRecords)
+        annualViewAdapter = AnnualViewAdapter(usedData = listOfRecords, stringLocalizer = stringLocalizer)
         viewModel.requestUsedData()
         return inflater.inflate(R.layout.data_used_fragment, container, false)
     }

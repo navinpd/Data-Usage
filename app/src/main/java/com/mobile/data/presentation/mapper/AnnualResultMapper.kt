@@ -20,16 +20,16 @@ internal class AnnualResultMapper @Inject constructor() :
             } else if (record.year == year) {
                 currentSum += record.volumeRecords
             } else {
-                val annualRecord = AnnualRecord("Annual Year: $year",
-                    "Used Data: ${currentSum.format(5)}")
+                val annualRecord = AnnualRecord(year,
+                    currentSum.toString())
                 annualRecords.add(annualRecord)
                 year = record.year
                 currentSum = record.volumeRecords
             }
         }
         if(year != "") {
-            val annualRecord = AnnualRecord("Annual Year: $year",
-                "Used Data: ${currentSum.format(5)}")
+            val annualRecord = AnnualRecord(year,
+                currentSum.toString())
             annualRecords.add(annualRecord)
         }
         return annualRecords

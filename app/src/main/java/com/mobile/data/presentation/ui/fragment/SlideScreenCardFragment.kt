@@ -4,8 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.fragment.app.Fragment
 import com.mobile.data.R
 import com.mobile.data.databinding.ViewPagerAdapterBinding
 import com.mobile.data.presentation.model.Records
@@ -37,8 +35,8 @@ internal class SlideScreenCardFragment() :
         if (arguments != null) {
             val records = requireArguments().get(RECORD) as Records
             viewBinding.run {
-                quarterData.text = records.volumeRecords.toString()
-                quarterNumber.text = records.quarter.javaClass.simpleName
+                quarterData.text = getString(R.string.data_used, records.volumeRecords)
+                quarterNumber.text = getString(R.string.quarter_number, records.quarter)
             }
         }
     }

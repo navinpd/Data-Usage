@@ -2,6 +2,7 @@ package com.mobile.data.di
 
 import android.app.Application
 import android.content.Context
+import android.content.SharedPreferences
 import com.mobile.common.AssetFileLoader
 import com.mobile.common.JsonParser
 import com.mobile.data.data.remote.NetworkService
@@ -15,6 +16,8 @@ import com.mobile.data.presentation.mapper.LinksDomainMapper
 import com.mobile.data.presentation.mapper.RecordsDomainMapper
 import com.mobile.data.presentation.mapper.ResultDomainMapper
 import com.mobile.data.presentation.viewmodel.UsedDataViewModel
+import com.mobile.data.util.StringLocalizer
+import com.mobile.data.util.StringLocalizerImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -55,6 +58,11 @@ internal object DiModule {
     fun provideAnnualResultMapper() = AnnualResultMapper()
 
     @Provides
+    fun provideStringLocalizer(application: Application): StringLocalizer {
+        return StringLocalizerImpl(application)
+    }
+
+    @Provides
     fun provideSharedPreference(@ApplicationContext appContext: Context) =
         appContext.getSharedPreferences("Local-Shared-Pref", 0)
 
@@ -77,6 +85,12 @@ internal object DiModule {
         repository: DataRepository,
         dataResultDomainMapper: DataResultDomainMapper,
         annualResultMapper: AnnualResultMapper,
-    ) = UsedDataViewModel(repository, dataResultDomainMapper, annualResultMapper)
+        sharedPreferences: SharedPreferences
+    ) = UsedDataViewModel(
+        dataRepository = repository,
+        dataResultDomainMapper = dataResultDomainMapper,
+        annualResultMapper = annualResultMapper,
+        sharedPreferences = sharedPreferences
+    )
 
 }
