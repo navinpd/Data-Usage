@@ -3,7 +3,7 @@ package com.mobile.data.util
 import android.util.Log
 import javax.inject.Inject
 
-class PageNotifier @Inject constructor() {
+class PageChangeNotifier @Inject constructor() {
     private val TAG : String = this.javaClass.simpleName
 
     fun movedToPage(message: String) {

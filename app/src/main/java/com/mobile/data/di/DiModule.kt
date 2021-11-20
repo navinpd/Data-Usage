@@ -8,7 +8,6 @@ import com.mobile.common.JsonParser
 import com.mobile.data.data.remote.NetworkService
 import com.mobile.data.data.remote.Networking
 import com.mobile.data.data.remote.repository.DataRepository
-import com.mobile.data.presentation.mapper.*
 import com.mobile.data.presentation.mapper.AnnualResultMapper
 import com.mobile.data.presentation.mapper.DataResultDomainMapper
 import com.mobile.data.presentation.mapper.FieldsDomainMapper
@@ -16,7 +15,7 @@ import com.mobile.data.presentation.mapper.LinksDomainMapper
 import com.mobile.data.presentation.mapper.RecordsDomainMapper
 import com.mobile.data.presentation.mapper.ResultDomainMapper
 import com.mobile.data.presentation.viewmodel.UsedDataViewModel
-import com.mobile.data.util.PageNotifier
+import com.mobile.data.util.PageChangeNotifier
 import com.mobile.data.util.StringLocalizer
 import com.mobile.data.util.StringLocalizerImpl
 import dagger.Module
@@ -45,7 +44,7 @@ internal object DiModule {
     fun provideJsonParser() = JsonParser()
 
     @Provides
-    fun providesPageNotifier() = PageNotifier()
+    fun providesPageNotifier() = PageChangeNotifier()
 
     @Provides
     fun provideAssetFileLoader() = AssetFileLoader()

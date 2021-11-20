@@ -13,7 +13,7 @@ import com.mobile.data.databinding.DetailedDataFragmentBinding
 import com.mobile.data.presentation.model.Records
 import com.mobile.data.presentation.ui.adapter.QuarterDataAdapter
 import com.mobile.data.presentation.viewmodel.UsedDataViewModel
-import com.mobile.data.util.PageNotifier
+import com.mobile.data.util.PageChangeNotifier
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -25,7 +25,7 @@ internal class DetailedDataFragment :
     private val viewModel by viewModels<UsedDataViewModel>()
 
     @Inject
-    lateinit var pageNotifier: PageNotifier
+    lateinit var pageChangeNotifier: PageChangeNotifier
     private lateinit var onPageChangeCallback: ViewPager2.OnPageChangeCallback
 
     companion object {
@@ -56,13 +56,13 @@ internal class DetailedDataFragment :
             val year = requireArguments().getString(YEAR)
             if (!year.isNullOrEmpty()) {
                 listItems.addAll(viewModel.getQuarterlyData(year))
-                pageNotifier.logSelectedYear(getString(R.string.selected_year, year))
+                pageChangeNotifier.logSelectedYear(getString(R.string.selected_year, year))
             }
         }
 
         onPageChangeCallback = object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
-                pageNotifier.movedToPage(getString(R.string.moved_to_page, position))
+                pageChangeNotifier.movedToPage(getString(R.string.moved_to_page, position))
             }
         }
 
@@ -70,12 +70,13 @@ internal class DetailedDataFragment :
         viewBinding.run {
             viewPager.adapter = pagerAdapter
             viewPager.setPageTransformer(MarginPageTransformer(32.dpToPx(viewPager)))
+            viewPager.offscreenPageLimit = 1
             viewPager.registerOnPageChangeCallback(onPageChangeCallback)
         }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        pageNotifier.orientationChanged(getString(R.string.orientation_changed))
+        pageChangeNotifier.orientationChanged(getString(R.string.orientation_changed))
         super.onSaveInstanceState(outState)
     }
 
